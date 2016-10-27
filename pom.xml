@@ -1,0 +1,206 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>moredo</groupId>
+  <artifactId>mdoa</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>moredooa</name>
+  <url>http://maven.apache.org</url>
+  <!-- 设置统一控制版本 -->
+  <properties>
+    <spring-version>4.3.3.RELEASE</spring-version>
+    <mybatis-version>3.4.1</mybatis-version>
+    <mybatis-spring-version>1.3.0</mybatis-spring-version>
+    <jackson-databind-version>2.8.4</jackson-databind-version>
+    <mysql-connector-java-version>5.1.38</mysql-connector-java-version>
+    <c3p0-version>0.9.5.2</c3p0-version>
+    <commons-collections-version>3.2.2</commons-collections-version>
+    <commons-fileupload-version>1.3.2</commons-fileupload-version>
+    <commons-lang3-version>3.4</commons-lang3-version>
+    <commons-codec-version>1.10</commons-codec-version>
+    <dom4j-version>1.6.1</dom4j-version>
+    <cglib-version>3.2.0</cglib-version>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- 设置统一依赖管理、不强行依赖 -->
+  <!--<dependencyManagement>-->
+    <dependencies>
+      <!--<dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.7</version>
+      </dependency>-->
+      <!--日志包 slf4j 加入即可会导入 log4j-->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.7.21</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+      </dependency>
+
+      <!-- Spring -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aspects</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+      <!--mvc dependency aop beans context core expression web-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+      <!--spring jdbc dependency tx -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-jdbc</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring-version}</version>
+      </dependency>
+
+      <!-- with mybatis-spring -->
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>${mybatis-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis-spring</artifactId>
+        <version>${mybatis-spring-version}</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.springframework.batch/spring-batch-infrastructure -->
+      <!--<dependency>
+        <groupId>org.springframework.batch</groupId>
+        <artifactId>spring-batch-infrastructure</artifactId>
+        <version>3.0.7.RELEASE</version>
+      </dependency>-->
+
+      <!-- Jackson Json处理工具包 -->
+      <!--<dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-databind-version}</version>
+      </dependency>-->
+      <!-- 阿里巴巴 json -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>1.2.18</version>
+      </dependency>
+      <!-- jdbc driver -->
+     <!-- <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql-connector-java-version}</version>
+      </dependency>-->
+      <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>6.0.4</version>
+      </dependency>
+      <!-- connect pool with c3p0 -->
+      <dependency>
+        <groupId>com.mchange</groupId>
+        <artifactId>c3p0</artifactId>
+        <version>${c3p0-version}</version>
+      </dependency>
+      <!-- apache commons jar -->
+      <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>${commons-collections-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>${commons-fileupload-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3-version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec-version}</version>
+      </dependency>
+      <!-- analyze xml use dom4j -->
+      <!--<dependency>
+        <groupId>dom4j</groupId>
+        <artifactId>dom4j</artifactId>
+        <version>${dom4j-version}</version>
+      </dependency>-->
+
+      <!-- 用tomcat-jsp-api来代替Servlet jsp el api -->
+      <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-jsp-api</artifactId>
+        <version>8.5.6</version>
+         <scope>provided</scope>
+      </dependency>
+
+      <!-- jstl页面标签 -->
+      <dependency>
+        <groupId>jstl</groupId>
+        <artifactId>jstl</artifactId>
+        <version>1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>taglibs</groupId>
+        <artifactId>standard</artifactId>
+        <version>1.1.2</version>
+      </dependency>
+
+
+      <!--<dependency>
+        <groupId>javax.activation</groupId>
+        <artifactId>activation</artifactId>
+        <version>1.1.1</version>
+      </dependency>-->
+
+      <!--<dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib</artifactId>
+        <version>${cglib-version}</version>
+      </dependency>-->
+
+      <!--<dependency>
+        <groupId>net.fckeditor</groupId>
+        <artifactId>java-core</artifactId>
+        <version>2.6</version>
+      </dependency>-->
+
+      <!--<dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20151123</version>
+      </dependency>-->
+
+      <!--pagation分页 -->
+      <dependency>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper</artifactId>
+        <version>4.1.6</version>
+      </dependency>
+
+    </dependencies>
+  <!--</dependencyManagement>-->
+  <build>
+    <finalName>mdoa</finalName>
+  </build>
+</project>

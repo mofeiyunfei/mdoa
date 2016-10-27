@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cc.moredo.oa.domain.User" >
+  <resultMap id="BaseResultMap" type="cc.moredo.oa.domain.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="userno" property="userno" jdbcType="INTEGER" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="CHAR" />
+    <result column="is_active" property="isActive" jdbcType="INTEGER" />
+    <result column="birth_time" property="birthTime" jdbcType="TIMESTAMP" />
+    <result column="active_time" property="activeTime" jdbcType="TIMESTAMP" />
+    <result column="addr" property="addr" jdbcType="VARCHAR" />
+    <result column="extra" property="extra" jdbcType="VARCHAR" />
+    <result column="u_grade" property="uGrade" jdbcType="VARCHAR" />
+    <result column="u_class" property="uClass" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="flag" property="flag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username, realname, phone,userno, email, password, createtime, gender, token, city_id, 
+    is_active, birth_time, active_time, addr, extra, u_grade, u_class, status, flag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectBySelective" resultMap="BaseResultMap" parameterType="cc.moredo.oa.domain.User" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    <where>
+      <if test="id != null" >
+        and id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="userno != null" >
+        and userno = #{userno,jdbcType=INTEGER}
+      </if>
+      <if test="username != null" >
+        and username = #{username,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null" >
+        and password = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="token != null" >
+        and token = #{token,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        and status = #{status,jdbcType=INTEGER}
+      </if>
+      <if test="isActive != null" >
+        and is_active = #{isActive,jdbcType=INTEGER}
+      </if>
+      <if test="phone != null" >
+        and phone = #{phone,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <select id="selectmaxuserno" resultType="java.lang.Integer"  >
+   SELECT MAX(userno) from `user`
+  </select>
+  
+  
+  <select id="selectByCondition" resultMap="BaseResultMap" parameterType="cc.moredo.oa.vo.Condition" >
+    SELECT a.* FROM
+	`user` a,
+	user_agency b
+    <where>
+      a.id = b.userid
+      <if test="agencyid != null" >
+        and b.agencyid = #{agencyid,jdbcType=INTEGER}
+      </if> 
+      <if test="isActive != null" >
+        and a.is_active = #{isActive,jdbcType=TINYINT}
+      </if>
+      <if test="statusid != null" >
+        and a.status = #{statusid,jdbcType=INTEGER}
+      </if>
+      <if test="grade != null" >
+        and a.u_grade = #{grade,jdbcType=INTEGER}
+      </if>
+      <if test="classes != null" >
+        and a.u_class = #{classes,jdbcType=INTEGER}
+      </if>
+      <if test="userno != null" >
+        and a.userno = #{userno,jdbcType=INTEGER}
+      </if>
+      <if test="extra != null" >
+        and a.extra = #{extra,jdbcType=INTEGER}
+      </if>
+      <if test="startDate != null" >
+        and a.phone = #{startDate,jdbcType=VARCHAR}
+      </if>
+      <if test="endDate != null" >
+        and a.password = #{endDate,jdbcType=VARCHAR}
+      </if>
+      <if test="billname != null" >
+        and a.username = #{billname,jdbcType=VARCHAR}
+      </if>
+      <if test="username != null" >
+        and a.username like  "%"#{username,jdbcType=VARCHAR}"%"
+      </if>
+      <if test="realname != null" >
+        and a.realname like  "%"#{realname,jdbcType=VARCHAR}"%"
+      </if>
+      
+      <!--两次判断,根据激活这个参数是否为空  -->
+      <if test="active_time_cc != null" >
+      
+			<if test="startDate != null" >
+			  and a.active_time >= #{startDate,jdbcType=VARCHAR}
+			</if>
+			<if test="endDate != null" >
+			  and a.active_time 
+			  &lt;= #{endDate,jdbcType=VARCHAR}
+			</if>
+      
+		  ORDER BY a.active_time DESC
+      </if>
+       <if test="active_time_cc == null" >
+       
+      	    <if test="startDate != null" >
+       	    and a.createtime >= #{startDate,jdbcType=VARCHAR}
+     	    </if>
+      	    <if test="endDate != null" >
+            and a.createtime 
+            &lt;= #{endDate,jdbcType=VARCHAR}
+            </if>
+       		<if test="orderBy == 1" >
+			ORDER BY a.createtime DESC
+     	    </if>
+     	  	<if test="orderBy == 0" >
+			 ORDER BY  a.username DESC
+     	    </if> 
+     	    <if test="orderBy == null and orderBy ==''" >
+			 ORDER BY  a.username DESC
+     	    </if>  
+		 
+      </if>
+    
+    </where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cc.moredo.oa.domain.User" useGeneratedKeys="true" keyProperty="id">
+    insert into user (id, username, realname, 
+      phone, userno, email, 
+      password, createtime, gender, 
+      token, city_id, is_active, 
+      birth_time, active_time, addr, 
+      extra, u_grade, u_class, 
+      status, flag)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{userno,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{gender,jdbcType=INTEGER}, 
+      #{token,jdbcType=VARCHAR}, #{cityId,jdbcType=CHAR}, #{isActive,jdbcType=INTEGER}, 
+      #{birthTime,jdbcType=TIMESTAMP}, #{activeTime,jdbcType=TIMESTAMP}, #{addr,jdbcType=VARCHAR}, 
+      #{extra,jdbcType=VARCHAR}, #{uGrade,jdbcType=VARCHAR}, #{uClass,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cc.moredo.oa.domain.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="userno != null" >
+        userno,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="token != null" >
+        token,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="isActive != null" >
+        is_active,
+      </if>
+      <if test="birthTime != null" >
+        birth_time,
+      </if>
+      <if test="activeTime != null" >
+        active_time,
+      </if>
+      <if test="addr != null" >
+        addr,
+      </if>
+      <if test="extra != null" >
+        extra,
+      </if>
+      <if test="uGrade != null" >
+        u_grade,
+      </if>
+      <if test="uClass != null" >
+        u_class,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userno != null" >
+        #{userno,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=CHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="birthTime != null" >
+        #{birthTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTime != null" >
+        #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addr != null" >
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="extra != null" >
+        #{extra,jdbcType=VARCHAR},
+      </if>
+      <if test="uGrade != null" >
+        #{uGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="uClass != null" >
+        #{uClass,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cc.moredo.oa.domain.User" >
+    update user
+    <set >
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="userno != null" >
+        userno = #{userno,jdbcType=INTEGER},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="token != null" >
+        token = #{token,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=CHAR},
+      </if>
+      <if test="isActive != null" >
+        is_active = #{isActive,jdbcType=INTEGER},
+      </if>
+      <if test="birthTime != null" >
+        birth_time = #{birthTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTime != null" >
+        active_time = #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addr != null" >
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="extra != null" >
+        extra = #{extra,jdbcType=VARCHAR},
+      </if>
+      <if test="uGrade != null" >
+        u_grade = #{uGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="uClass != null" >
+        u_class = #{uClass,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cc.moredo.oa.domain.User" >
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      userno = #{userno,jdbcType=INTEGER},
+      email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      gender = #{gender,jdbcType=INTEGER},
+      token = #{token,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=CHAR},
+      is_active = #{isActive,jdbcType=INTEGER},
+      birth_time = #{birthTime,jdbcType=TIMESTAMP},
+      active_time = #{activeTime,jdbcType=TIMESTAMP},
+      addr = #{addr,jdbcType=VARCHAR},
+      extra = #{extra,jdbcType=VARCHAR},
+      u_grade = #{uGrade,jdbcType=VARCHAR},
+      u_class = #{uClass,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

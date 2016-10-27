@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!-- setting 二级缓存开关  延迟加载。。。
+	一个是setting,这个是开启二级缓存的开关,还有延迟加载啊,等,但是在互联网项目中这两想是基本是不会开的,
+	因为缓存我们是有分布式缓存,延迟加载我们的数据要求是实时性的
+	 -->
+	
+	<!-- 别名  cn/itcast/core/bean/TestTb.java     -->
+	<!-- <typeAliases>
+		<package name="cn.itcast.core.bean" />
+	</typeAliases> -->
+	
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageHelper">
+			<property name="dialect" value="mysql"/>
+			 <!--   该参数默认为false 
+	         设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 
+	         和startPage中的pageNum效果一样 -->
+			<property name="offsetAsPageNum" value="true"/>
+			<!-- 该参数默认为false 
+	         设置为true时，使用RowBounds分页会进行count查询  -->
+			<property name="rowBoundsWithCount" value="true"/>
+		</plugin>
+	</plugins>
+	<!-- Mapper所在位置  也不用配置 -->
+	<mappers>
+		<mapper resource="cc/moredo/dao/oa/UserMapper.xml"/>
+	</mappers>
+
+</configuration>

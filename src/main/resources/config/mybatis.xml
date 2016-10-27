@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+	
+	<!-- mybatis 工厂     + spring  整合包-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- database -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 加载Mybatis核心配置文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"/>
+	</bean>
+	
+	<!-- Mybatis第三种    1:原始Dao 开发  2：接口开发（手写） 3：接口式开发（扫描）
+	  如果是开启这个借口那么 Mapper的位置就不用写了，已经扫描到了。 -->
+	<!-- <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.itcast.core.dao"/>
+	</bean> -->
+		
+</beans>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+
+	<!--1. springmvc 扫描 @Controller  不要扫描@Service  。。。。use-default-filters="false" -->
+	<context:component-scan base-package="cc.moredo.oa" use-default-filters="false">
+		<!--  include 白名单   exinclude 黑名单 -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	
+	<!-- 三个基本点 -->
+	<!--2. 处理器映射器、处理器适配器 -->
+	<mvc:annotation-driven />
+	<!--3. 视图解析器 -->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+	<!--4. 允许静态资源文件直接访问 -->
+	<mvc:default-servlet-handler/>
+	<!-- <mvc:resources mapping=".*" location="/" /> -->
+	<!-- 对静态资源文件的访问 支持访问WEB-INF目录 -->  
+    <!-- <mvc:resources location="/uikit-2.3.1/" mapping="/uikit-2.3.1/**" /> -->  
+
+	<!-- 
+	      一、 采用继承依赖包含的方式：
+	      1.注释掉 <import resource="dubbo-consumer.xml"/>。
+	      2.同时将mdshell-service-dao中的 dubbo-provider.xml 拖出config目录到上级目录,不让包含即可
+	      3.在pom.xml中增加 mdshell-service-dao的依赖。
+	      4.在web.xml中 增加spring的监听 来监听applicationContext.xml
+	      二、采用dubbo,zookeeper方式：
+	      1.与以上相反操作即可。
+	      2.先启动service-dao,在启动消费方。
+	-->
+	<!-- <import resource="dubbo-consumer.xml"/> -->
+	
+	<!--6. 上传配置  -->
+	<!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		&lt;!&ndash; 最大的文件大小，按byte单位来计算 204800000&ndash;&gt;
+		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="maxUploadSize" value="204800000" />
+		<property name="uploadTempDir" value="fileUpload/temp" />
+	</bean>-->
+	
+	
+  
+    <!--7. 用于将对象转换为 JSON  -->
+<!-- 	<bean id="stringConverter"
+        class="org.springframework.http.converter.StringHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+	<bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringConverter" />
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean> -->
+	
+</beans>
