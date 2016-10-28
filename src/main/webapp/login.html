@@ -3,8 +3,38 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>综合信息管理系统</title>
-
+    <script type="text/javascript" src="js/form.js"></script>
+    <link rel="stylesheet" type="text/css" href="ui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="ui/themes/icon.css">
+    <script type="text/javascript" src="ui/jquery.min.js"></script>
+    <script type="text/javascript" src="ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="ui/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet" type="text/css" href="css/login.css"/>
+
+    <script>
+        function login()
+        {
+            //得到表单数据
+            var formdata=getFormData("loginform");
+            $.ajax({
+                url:'login/checkUser',
+                type:'post',
+                data:formdata,
+                dataType:'json',
+                success:function(value){
+                    if(value.success){
+                        location.href='index.jsp';
+                    }else
+                    {
+                        $.messager.alert("提示",value.message);
+                    }
+                }
+            });
+
+
+        }
+    </script>
+
 </head>
 <body>
 <div class='signup_container'>
@@ -17,11 +47,11 @@
                         <form class="signup_form_form" id="loginform" method="post" >
                                 <div class="form_row first_row">
                                     <label for="signup_email">请输入用户名</label>
-                                    <input type="text" name="users.loginName" placeholder="您好请输入用户名" id="signup_name" data-required="required">
+                                    <input type="text" name="username" placeholder="您好请输入用户名" id="signup_name" data-required="required">
                                 </div>
                                 <div class="form_row">
                                     <label for="signup_password">请输入密码</label>
-                                    <input type="password" name="users.password" placeholder="您好请输入密码" id="signup_password" data-required="required">
+                                    <input type="password" name="password" placeholder="您好请输入密码" id="signup_password" data-required="required">
                                 </div>
                        </form>
             </div> 
